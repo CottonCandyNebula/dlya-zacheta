@@ -1,0 +1,110 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+class figure{
+    protected:
+    double x, y;
+    public:
+    figure(){
+        x=0;
+        y=0;
+    }
+    figure(double nx, double ny){
+        x=nx; y=ny;
+    }
+    void virtual print(){
+        cout << '('<< x <<", "<<y<<')'<<endl;
+    }
+    double virtual area(){
+        return 0;
+    }
+    double virtual length(){
+        return 0;
+    }
+};
+
+class circle : public figure{
+    protected:
+    double r;
+    public:
+    circle (double nx, double ny, double nr){
+        x=nx; y=ny; r=nr;
+    }
+    double area(){
+        return 4*atan(1)*r*r;
+    }
+    double length(){
+        return 2*4*atan(1)*r;
+    }
+};
+
+class square : public figure{
+    protected:
+    double l;
+    public:
+    square (double nx, double ny, double nl){
+        x=nx; y=ny; l=nl;
+    }
+    double area(){
+        return l*l;
+    }
+    double length(){
+        return 4*l;
+    }
+    void print(){
+        cout<< '('<<x<<", "<<y<<") "<< '('<<x+l<<", "<<y<<") "<< '('<<x+l<<", "<<y-l<<") "<< '('<<x<<", "<<y-l<<") "<< endl;
+    }
+};
+
+class triangle : public figure{
+    public:
+    double x1, x2, x3, y1, y2, y3;
+    triangle (double nx1, double ny1, double nx2, double ny2, double nx3, double ny3){
+        x1=nx1; y1=ny1; x2=nx2; y2=ny2; x3=nx3; y3=ny3;
+    }
+    double area(){
+        return 0.5 * abs((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
+    }
+    double length(){
+        return sqrt(pow(x2-x1,2)+pow(y2-y1,2))+sqrt(pow(x3-x2,2)+pow(y3-y2,2))+sqrt(pow(x1-x3,2)+pow(y1-y3,2));
+    }
+    void print(){
+        cout<< '('<<x1<<", "<<y1<<") "<< '('<<x2<<", "<<y2<<") "<< '('<<x3<<", "<<y3<<")"<< endl;
+    }
+};
+
+int main()
+{
+    figure *p, *p2;
+    circle *c;
+    cout << "Точка:" << endl;
+    p = new figure(2,3);
+    p->print();
+    cout<<endl;
+    
+    p2 = new circle(5,6,8); //круг
+    cout << "Круг:" << endl;
+    p2->print();
+    cout<< "Длина: " << p2->length() <<endl;
+    cout<< "Площадь: " << p2->area() <<endl;
+    cout<<endl;
+    
+    figure *p3;
+    p3 = new square(1,5,4); // квадрат
+    cout << "Квадрат:" << endl;
+    p3->print();
+    cout<< "Длина: " << p3->length() <<endl;
+    cout<< "Площадь: " << p3->area() <<endl;
+    cout<<endl;
+    
+    figure *p4;
+    p4 = new triangle(1,1,2,5,6,0); // треугольник
+    cout << "Треугольник:" << endl;
+    p4->print();
+    cout<< "Длина: " << p4->length() <<endl;
+    cout<< "Площадь: " << p4->area() <<endl;
+
+    return 0;
+}
