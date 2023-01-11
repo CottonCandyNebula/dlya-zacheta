@@ -1,0 +1,198 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <stdlib.h>
+using namespace std;
+
+int comp1 (const void * a, const void * b)
+{
+  return ( *(int*)a - *(int*)b );
+}
+
+class MyArray { 
+    private:
+    int n, *ms;
+    public:
+    MyArray (){ 
+    n=0;
+    ms=NULL; 
+    }
+
+    void init(int k){
+    if(ms==NULL){
+    ms = new int[k]; 
+    ms = new int[k]; 
+    n=k;
+    
+    }
+    srand(time(0));
+    for (int i=0;i<n;i++) ms[i] = rand()%100 - 50;
+    
+    qsort (ms, n, sizeof(int), comp1);
+    }
+
+    void deleteElms(){
+        int* new_a, r, j;
+        cout<<"Введите индекс удаленного элемента: ";
+        cin >> r;
+        j=-1;
+        new_a = new int[n];
+        for (int i=0;i<n;i++) {
+            j+=1;
+            if (i==r) {
+                i += 1;
+                new_a[j] = ms[i];
+            }
+            else {
+                new_a[j] = ms[i];
+            }
+        }
+        n=n-1;
+        ms=new_a;
+    }
+    
+    void addElms(){
+        int* new_b, r, e;
+        cout<<"Введите новый элемент: ";
+        cin >> e;
+        cout<<"Введите индекс заданного элемента: ";
+        cin >> r;
+        n +=1;
+        new_b = new int[n];
+        for (int i=0;i<r;i++) { 
+            new_b[i]=ms[i];
+        }
+        new_b[r]=e;
+        for (int i=r+1;i<n;i++){
+            new_b[i]=ms[i-1];
+        }
+       
+        ms=new_b;
+    }
+    
+    void addElm_2(){
+        int* new_d;
+        int q, w;
+        cout<<"Введите новый элемент: ";
+        cin >> q;
+        w = n + 1;
+        new_d = new int[1];;
+        for (int i=0;i<w;i++) { 
+            new_d[i]=ms[i];
+        }
+        new_d[n]= q;
+        ms =  new_d;
+        n += 1;
+        qsort (ms, n, sizeof(int), comp1);
+    }
+    
+    void delmMas(){
+        int* new_c;
+        int* new_d;
+        int c = -1;
+        int d = -1;
+        new_c = new int[1];
+        new_d = new int[1];
+        for (int i = 0; i < n; i++) {
+            if (ms[i] > 0){
+                c += 1;
+                new_c[c] = ms[i];
+            }
+            else {
+                d += 1;
+                new_d[d] = ms[i];
+            }
+        }
+        for (int i = 0; i < c+1; i++){
+            cout << new_c[i] <<" "; 
+            
+        }
+        cout << endl;
+        for (int i = 0; i < d+1; i++){
+            cout << new_d[i] <<" ";
+        }
+        cout << endl;
+        
+    }
+    
+    void maxEl() {
+        int max;
+        max = -1000;
+        for (int i = 0; i < n; i++) {
+            if (ms[i] > max) max = ms[i];
+        }
+        cout << "max = " << max << endl;
+    }
+    
+    void minEl() {
+        int min;
+        min = 1000;
+        for (int i = 0; i < n; i++) {
+            if (ms[i] < min) min = ms[i];
+        }
+        cout << "min = " << min << endl;
+    } 
+    
+
+    void print(){
+        //qsort (ms, n, sizeof(int), comp1);
+        for (int i=0;i<n;i++) cout << ms[i]<<" "; 
+        cout << endl;
+    }
+    
+    void printElem(){
+        int r;
+        cout<<"Введите индекс элемента для вывода: ";
+        cin >> r;
+        for (int i=0;i<n;i++){
+            if (i == r) {
+                cout << ms[i] << endl;
+                break;
+            }
+        }
+    }
+    
+    
+
+    ~MyArray(){
+        delete[] ms;
+    }
+};
+
+
+
+int main()
+{
+
+    MyArray m; 
+    //m.init(20); 
+    //m.print(); 
+
+
+    MyArray *A = new MyArray; 
+    A->init(10); 
+    A->print();
+    
+    A->printElem();
+    //A->delmMas();
+    cout << "Удалить элемент:" << endl;
+    A->deleteElms(); 
+    A->print();
+    
+    cout << "Новый элемент (по индексу)" << endl;
+    A->addElms();
+    A->print();
+    
+    
+    cout << "Новый элемент (с сортировкой)" << endl;
+    A->addElm_2();
+    A->print();
+    
+    
+    A->maxEl();
+    A->minEl();
+    
+    delete []A; 
+
+    return 0;
+}
